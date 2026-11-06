@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Same long-press shortcuts as Seerr's web app manifest, plus the app's own settings. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="discover"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_sparkles"
+        android:shortcutShortLabel="@string/shortcut_discover">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="io.github.ramennuudlss.seerr.MainActivity"
+            android:targetPackage="io.github.ramennuudlss.seerr">
+            <extra android:name="path" android:value="/" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="requests"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_clock"
+        android:shortcutShortLabel="@string/shortcut_requests">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="io.github.ramennuudlss.seerr.MainActivity"
+            android:targetPackage="io.github.ramennuudlss.seerr">
+            <extra android:name="path" android:value="/requests" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_user"
+        android:shortcutShortLabel="@string/shortcut_profile">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="io.github.ramennuudlss.seerr.MainActivity"
+            android:targetPackage="io.github.ramennuudlss.seerr">
+            <extra android:name="path" android:value="/profile" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="app_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_cog"
+        android:shortcutShortLabel="@string/shortcut_app_settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="io.github.ramennuudlss.seerr.SettingsActivity"
+            android:targetPackage="io.github.ramennuudlss.seerr" />
+    </shortcut>
+</shortcuts>

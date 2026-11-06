@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Seerr" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/seerr_accent</item>
+        <item name="colorOnPrimary">@color/seerr_text</item>
+        <item name="colorPrimaryContainer">@color/seerr_accent</item>
+        <item name="colorOnPrimaryContainer">@color/seerr_text</item>
+        <item name="colorSecondary">@color/seerr_accent_light</item>
+        <item name="colorSurface">@color/seerr_surface</item>
+        <item name="colorOnSurface">@color/seerr_text</item>
+        <item name="colorSurfaceContainerHigh">@color/seerr_surface</item>
+        <item name="colorOutline">@color/seerr_border</item>
+        <item name="colorError">@color/seerr_error</item>
+        <item name="android:colorBackground">@color/seerr_bg</item>
+        <item name="android:windowBackground">@color/seerr_bg</item>
+        <item name="android:statusBarColor">@color/seerr_bg</item>
+        <item name="android:navigationBarColor">@color/seerr_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

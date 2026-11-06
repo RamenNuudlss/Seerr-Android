@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Self-hosted servers are often reached over plain http on the LAN (e.g. http://192.168.1.10:5055)
+  or over https with a certificate from a private CA. Allow both: cleartext, plus CAs the user
+  has installed in Android settings.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

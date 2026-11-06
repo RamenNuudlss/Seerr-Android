@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Seerr</string>
+
+    <!-- Setup -->
+    <string name="setup_subtitle">Enter the address of your Seerr server</string>
+    <string name="setup_hint">Server address</string>
+    <string name="setup_example">e.g. https://requests.example.com or 192.168.1.10:5055</string>
+    <string name="setup_connect">Connect</string>
+    <string name="setup_checking">Checking server…</string>
+    <string name="setup_error_empty">Enter your server address.</string>
+    <string name="setup_error_unreachable">Couldn\'t reach a Seerr server at that address. Check the address and that your phone can reach it (same network or VPN).\n\n%1$s</string>
+    <string name="setup_error_not_seerr">Something answered at that address, but it doesn\'t look like Seerr (or Overseerr/Jellyseerr).</string>
+    <string name="setup_connected">Connected to Seerr %1$s</string>
+    <string name="setup_disclaimer">Unofficial app. Not affiliated with the Seerr team.</string>
+
+    <!-- Main -->
+    <string name="error_title">Can\'t load Seerr</string>
+    <string name="error_retry">Retry</string>
+    <string name="error_settings">App settings</string>
+    <string name="press_back_again">Press back again to exit</string>
+    <string name="no_app_for_link">No app found to open this link.</string>
+    <string name="http_auth_title">Sign in to %1$s</string>
+    <string name="http_auth_message">This server requires a username and password.</string>
+    <string name="http_auth_user">Username</string>
+    <string name="http_auth_password">Password</string>
+    <string name="http_auth_remember">Remember on this device</string>
+    <string name="sign_in">Sign in</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="plex_sign_in">Sign in with Plex</string>
+
+    <!-- Settings -->
+    <string name="settings_title">App settings</string>
+    <string name="settings_server">Server</string>
+    <string name="settings_change_server">Change server</string>
+    <string name="settings_notifications">Request notifications</string>
+    <string name="settings_notifications_summary">Get notified when your requests are approved, declined or become available. Admins also get notified about new requests waiting for approval. Checks your server about every 15 minutes.</string>
+    <string name="settings_plex_browser">Open Plex sign-in in browser</string>
+    <string name="settings_plex_browser_summary">Recommended. Lets you sign in to Plex with Google, Apple or a saved password. Turn off to sign in inside the app.</string>
+    <string name="settings_pull_refresh">Pull down to refresh</string>
+    <string name="settings_pull_refresh_summary">Swipe down at the top of a page to reload it.</string>
+    <string name="settings_clear_data">Sign out and clear data</string>
+    <string name="settings_clear_data_confirm">This signs you out of Seerr in the app and clears its cache and saved passwords.</string>
+    <string name="settings_cleared">Signed out and cleared</string>
+    <string name="settings_check_updates">Check for updates</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_github">View on GitHub</string>
+    <string name="settings_disclaimer">Unofficial Android app for Seerr. The app shows your own server\'s interface, so it always matches the Seerr version you run. Not affiliated with the Seerr team.</string>
+
+    <!-- Updates -->
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_message">Version %1$s is available (you have %2$s).</string>
+    <string name="update_download">Download</string>
+    <string name="update_later">Later</string>
+    <string name="update_skip">Skip this version</string>
+    <string name="update_none">You\'re on the latest version.</string>
+    <string name="update_failed">Couldn\'t check for updates.</string>
+
+    <!-- Notifications -->
+    <string name="channel_requests">Request updates</string>
+    <string name="channel_requests_desc">Approvals, declines, availability and new requests</string>
+    <string name="notif_approved">Request approved</string>
+    <string name="notif_declined">Request declined</string>
+    <string name="notif_available">Now available</string>
+    <string name="notif_partial">Partially available</string>
+    <string name="notif_failed">Request failed</string>
+    <string name="notif_new_request">New request</string>
+    <string name="notif_new_request_body">%1$s requested %2$s</string>
+
+    <!-- Instant alerts -->
+    <string name="instant_header">Instant alerts</string>
+    <string name="instant_switch">Instant new-request alerts</string>
+    <string name="instant_summary_off">Get a notification within seconds of someone making a request, with Approve and Decline buttons. Uses Seerr\'s built-in ntfy notifications; Seerr admins can turn this on in one tap.</string>
+    <string name="instant_summary_on">On. Seerr sends new requests to this ntfy topic and the app listens to it:</string>
+    <string name="instant_battery_button">Allow background activity (recommended)</string>
+    <string name="instant_battery_title">Keep alerts instant</string>
+    <string name="instant_battery_message">To get alerts the moment a request is made, even while your phone is asleep, allow Seerr to run in the background. Android will show the battery screen next.</string>
+    <string name="instant_battery_allow">Allow</string>
+    <string name="instant_battery_skip">Not now</string>
+    <string name="instant_test">Send test</string>
+    <string name="instant_edit">Change topic</string>
+    <string name="instant_test_body">Test notification from the Seerr app. Instant alerts are working.</string>
+    <string name="instant_test_sent">Test sent. A notification should appear in a few seconds.</string>
+    <string name="instant_test_failed">Couldn\'t send the test: %1$s</string>
+    <string name="instant_checking">Checking Seerr\'s notification settings…</string>
+    <string name="instant_failed">Couldn\'t read Seerr\'s notification settings: %1$s</string>
+    <string name="instant_save_failed">Couldn\'t update Seerr\'s notification settings: %1$s</string>
+    <string name="instant_setup_title">Turn on instant alerts?</string>
+    <string name="instant_setup_message">The app will switch on Seerr\'s ntfy notifications for new requests and send them to a private, randomly named topic on the free ntfy.sh service. The app keeps a lightweight connection open to receive them.\n\nYou can use your own ntfy server instead. If yours needs a login, set it up under Seerr → Settings → Notifications → ntfy first, then come back here.</string>
+    <string name="instant_use_ntfy_sh">Use ntfy.sh</string>
+    <string name="instant_use_own">Own server…</string>
+    <string name="instant_existing_title">Use Seerr\'s ntfy topic?</string>
+    <string name="instant_existing_message">Seerr already sends notifications to ntfy topic “%1$s” on %2$s. The app will listen to it.</string>
+    <string name="instant_existing_add_types">\n\nNew-request notifications are switched off for it in Seerr, so the app will switch them on.</string>
+    <string name="instant_use_it">Use it</string>
+    <string name="instant_not_admin_title">Ask your Seerr admin</string>
+    <string name="instant_not_admin_message">Only Seerr admins can switch on ntfy notifications. If your admin has already set it up, enter the ntfy server and topic they gave you.</string>
+    <string name="instant_enter_topic">Enter topic</string>
+    <string name="instant_manual_title">ntfy topic</string>
+    <string name="instant_server_hint">ntfy server</string>
+    <string name="instant_topic_hint">Topic</string>
+    <string name="instant_token_hint">Access token (optional)</string>
+    <string name="save">Save</string>
+    <string name="instant_listener_title">Instant alerts</string>
+    <string name="instant_status_connecting">Connecting…</string>
+    <string name="instant_status_listening">Listening for new requests</string>
+    <string name="instant_status_reconnecting">Connection lost. Reconnecting…</string>
+    <string name="instant_status_auth">The ntfy server rejected the login. Check the topic in app settings.</string>
+    <string name="channel_instant">New requests</string>
+    <string name="channel_instant_desc">Instant alerts when someone makes a request</string>
+    <string name="channel_listener">Background connection</string>
+    <string name="channel_listener_desc">Required by Android while instant alerts are on. You can hide this notification.</string>
+    <string name="action_approve">Approve</string>
+    <string name="action_decline">Decline</string>
+    <string name="action_approved">Approved</string>
+    <string name="action_declined">Declined</string>
+    <string name="action_not_allowed">You don\'t have permission to manage requests</string>
+    <string name="action_failed">Couldn\'t reach Seerr. Open the app to try again.</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_discover">Discover</string>
+    <string name="shortcut_requests">Requests</string>
+    <string name="shortcut_profile">Profile</string>
+    <string name="shortcut_app_settings">App settings</string>
+</resources>
