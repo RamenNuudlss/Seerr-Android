@@ -21,6 +21,8 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import org.json.JSONObject
 import java.io.IOException
+import java.time.Instant
+import kotlin.math.abs
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.concurrent.thread
@@ -44,6 +46,10 @@ class NtfyListenerService : Service() {
     private var managerCheckedAt = 0L
     private var isManager = false
 
+    /** What the ongoing notification currently says (null = connected and listening). */
+    @Volatile private var listenerStatus: String? = null
+    @Volatile private var listenerConnected = false
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -52,7 +58,7 @@ class NtfyListenerService : Service() {
         ServiceCompat.startForeground(
             this,
             LISTENER_NOTIFICATION_ID,
-            listenerNotification(connected = false),
+            listenerNotification(listenerConnected, listenerStatus),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
             } else 0
@@ -189,18 +195,23 @@ class NtfyListenerService : Service() {
 
     private fun showMessage(id: String, json: JSONObject) {
         if (!canPostNotifications(this)) return
-        val title = json.optString("title").ifEmpty { getString(R.string.notif_new_request) }
-        val body = cleanMarkdown(json.optString("message"))
-        val path = json.optString("click").takeIf { it.isNotEmpty() }
+        val msg = parse(json.optString("title"), json.optString("message"))
+        val notificationId = (id.ifEmpty { System.nanoTime().toString() }).hashCode()
+
+        // Seerr only includes a link when its Application URL is set; use it when present.
+        val clickPath = json.optString("click").takeIf { it.isNotEmpty() }
             ?.let { Uri.parse(it).path }
             ?.takeIf { it.length > 1 }
-            ?: "/requests"
-        val notificationId = (id.ifEmpty { System.nanoTime().toString() }).hashCode()
-        val poster = json.optJSONObject("attach")?.optString("url")
-            ?.takeIf { it.startsWith("http") }
-            ?.let { loadBitmap(it) }
-        val pendingRequestId = findPendingRequest(path)
+        // ntfy delivers the poster as "attachment" (Seerr publishes it as "attach").
+        val posterUrl = (json.optJSONObject("attachment") ?: json.optJSONObject("attach"))
+            ?.optString("url")?.takeIf { it.startsWith("http") }
+        val poster = posterUrl?.let { loadBitmap(it) }
+        val sentAt = json.optLong("time", 0L) * 1000L
+        val pending = findPendingRequest(clickPath, msg.requester, sentAt)
 
+        val path = clickPath
+            ?: pending?.let { "/${it.mediaType}/${it.tmdbId}" }
+            ?: if (msg.requester != null) "/requests" else "/"
         val open = PendingIntent.getActivity(
             this,
             notificationId,
@@ -209,39 +220,55 @@ class NtfyListenerService : Service() {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
+        // Collapsed: title + "Requested by alex · Pending approval".
+        // Expanded: the same line plus a short synopsis.
+        val summary = listOfNotNull(
+            msg.requester?.let { getString(R.string.notif_requested_by, it) },
+            msg.status,
+        ).joinToString(" · ").ifEmpty { msg.overview?.let { shorten(it, 90) }.orEmpty() }
+        val synopsis = msg.overview?.takeIf { msg.requester != null }?.let { shorten(it, 180) }
+        val expanded = if (synopsis != null) "$summary\n\n$synopsis" else summary
+
         val builder = NotificationCompat.Builder(this, INSTANT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_seerr)
             .setColor(ContextCompat.getColor(this, R.color.seerr_accent))
-            .setContentTitle(title)
-            .setContentText(body)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setSubText(msg.event)
+            .setContentTitle(msg.subject)
+            .setContentText(summary)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(expanded))
             .setLargeIcon(poster)
             .setContentIntent(open)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-        if (pendingRequestId != null) {
+            .setWhen(if (sentAt > 0) sentAt else System.currentTimeMillis())
+            .setShowWhen(true)
+        if (pending != null) {
             builder.addAction(
                 0, getString(R.string.action_approve),
-                RequestActionReceiver.pendingIntent(this, pendingRequestId, notificationId, title, approve = true)
+                RequestActionReceiver.pendingIntent(this, pending.id, notificationId, msg.subject, approve = true)
             )
             builder.addAction(
                 0, getString(R.string.action_decline),
-                RequestActionReceiver.pendingIntent(this, pendingRequestId, notificationId, title, approve = false)
+                RequestActionReceiver.pendingIntent(this, pending.id, notificationId, msg.subject, approve = false)
             )
         }
         @Suppress("MissingPermission")
         NotificationManagerCompat.from(this).notify(notificationId, builder.build())
     }
 
+    private data class PendingMatch(val id: Int, val mediaType: String, val tmdbId: Int)
+
     /**
-     * If the message is about a request that's still pending and the signed-in user can
-     * manage requests, returns its id so the notification can offer Approve/Decline.
+     * Finds the pending request a message is about, so the notification can offer
+     * Approve/Decline. Matches on the link's TMDB id when Seerr sends one; otherwise on the
+     * requester's name and the request having been made around the time of the message.
+     * Returns null if the signed-in user can't manage requests.
      */
-    private fun findPendingRequest(path: String): Int? {
-        val match = Regex("""^/(movie|tv)/(\d+)""").find(path) ?: return null
-        val type = match.groupValues[1]
-        val tmdbId = match.groupValues[2].toIntOrNull() ?: return null
+    private fun findPendingRequest(clickPath: String?, requester: String?, sentAt: Long): PendingMatch? {
+        val link = clickPath?.let { Regex("""^/(movie|tv)/(\d+)""").find(it) }
+        if (link == null && requester == null) return null // not a request message
         val base = Prefs(this).serverUrl ?: return null
         val cookie = Server.cookie(base) ?: return null
         val auth = Server.proxyAuth(this, base)
@@ -250,14 +277,32 @@ class NtfyListenerService : Service() {
             "$base/api/v1/request?take=20&skip=0&filter=pending&sort=added", cookie, auth
         ) ?: return null
         val results = list.optJSONArray("results") ?: return null
+        val reference = if (sentAt > 0) sentAt else System.currentTimeMillis()
+
+        var best: PendingMatch? = null
+        var bestGap = Long.MAX_VALUE
         for (i in 0 until results.length()) {
             val r = results.optJSONObject(i) ?: continue
+            if (r.optInt("status") != 1) continue
             val media = r.optJSONObject("media") ?: continue
-            if (r.optInt("status") == 1 && media.optInt("tmdbId") == tmdbId &&
-                media.optString("mediaType") == type
-            ) return r.optInt("id")
+            val type = media.optString("mediaType")
+            val tmdbId = media.optInt("tmdbId")
+            val candidate = PendingMatch(r.optInt("id"), type, tmdbId)
+            if (link != null) {
+                if (type == link.groupValues[1] && tmdbId.toString() == link.groupValues[2]) return candidate
+                continue
+            }
+            val name = r.optJSONObject("requestedBy")?.optString("displayName").orEmpty()
+            if (!name.equals(requester, ignoreCase = true)) continue
+            val created = runCatching { Instant.parse(r.optString("createdAt")).toEpochMilli() }.getOrNull()
+                ?: continue
+            val gap = abs(created - reference)
+            if (gap <= MATCH_WINDOW_MS && gap < bestGap) {
+                best = candidate
+                bestGap = gap
+            }
         }
-        return null
+        return best
     }
 
     private fun canManage(base: String, cookie: String, auth: Pair<String, String>?): Boolean {
@@ -310,6 +355,8 @@ class NtfyListenerService : Service() {
 
     /** [status] null means connected and listening. */
     private fun updateListenerNotification(status: String?) {
+        listenerStatus = status
+        listenerConnected = status == null
         if (!canPostNotifications(this)) return
         @Suppress("MissingPermission")
         NotificationManagerCompat.from(this).notify(
@@ -322,6 +369,7 @@ class NtfyListenerService : Service() {
         const val INSTANT_CHANNEL_ID = "instant"
         const val LISTENER_CHANNEL_ID = "listener"
         private const val LISTENER_NOTIFICATION_ID = 1001
+        private const val MATCH_WINDOW_MS = 10 * 60_000L
         private const val MIN_BACKOFF = 2_000L
         private const val MAX_BACKOFF = 5 * 60_000L
 
@@ -329,6 +377,46 @@ class NtfyListenerService : Service() {
             Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
                 ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
+
+        /** The pieces of one of Seerr's ntfy messages. */
+        data class ParsedMessage(
+            val event: String?,
+            val subject: String,
+            val requester: String?,
+            val status: String?,
+            val overview: String?,
+        )
+
+        /**
+         * Seerr titles its messages "<event> - <title>" and writes the body as the synopsis
+         * followed by "**Requested By:** name" and "**Request Status:** status" lines.
+         * Labels are localised, so the fields are read by position, not by label text.
+         */
+        fun parse(title: String, message: String): ParsedMessage {
+            val dash = title.indexOf(" - ")
+            val event = if (dash > 0) title.substring(0, dash).trim() else null
+            val subject = (if (dash > 0) title.substring(dash + 3) else title).trim()
+                .ifEmpty { "Seerr" }
+            val field = Regex("""^\*\*(.+?):\*\*\s*(.+)$""")
+            val values = mutableListOf<String>()
+            val text = mutableListOf<String>()
+            for (raw in message.lines()) {
+                val line = raw.trim()
+                val m = field.find(line)
+                if (m != null) values += cleanMarkdown(m.groupValues[2])
+                else if (values.isEmpty()) text += line
+            }
+            val overview = cleanMarkdown(text.joinToString(" ").replace(Regex("""\s+"""), " "))
+                .ifEmpty { null }
+            return ParsedMessage(event, subject, values.getOrNull(0), values.getOrNull(1), overview)
+        }
+
+        /** Cuts text at a word boundary near [max] characters. */
+        fun shorten(text: String, max: Int): String {
+            if (text.length <= max) return text
+            val cut = text.lastIndexOf(' ', max).takeIf { it > max / 2 } ?: max
+            return text.substring(0, cut).trimEnd(',', '.', ';', ':', ' ') + "…"
+        }
 
         /** Seerr's ntfy messages are Markdown with escaped punctuation; show them as plain text. */
         fun cleanMarkdown(text: String): String =

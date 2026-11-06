@@ -112,6 +112,7 @@
     <string name="channel_instant_desc">Instant alerts when someone makes a request</string>
     <string name="channel_listener">Background connection</string>
     <string name="channel_listener_desc">Required by Android while instant alerts are on. You can hide this notification.</string>
+    <string name="notif_requested_by">Requested by %1$s</string>
     <string name="action_approve">Approve</string>
     <string name="action_decline">Decline</string>
     <string name="action_approved">Approved</string>
