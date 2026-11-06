@@ -1,0 +1,11 @@
+name: Feature request
+description: Suggest something the Android app could do better
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Describe the feature and how you'd use it on your phone.
+    validations:
+      required: true

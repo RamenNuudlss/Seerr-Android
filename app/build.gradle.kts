@@ -20,7 +20,7 @@ android {
         targetSdk = 35
         versionCode = appVersionCode
         versionName = appVersionName
-        buildConfigField("String", "GITHUB_REPO", "\"RamenNuudlss/seerr-android\"")
+        buildConfigField("String", "GITHUB_REPO", "\"RamenNuudlss/Seerr-Android\"")
     }
 
     signingConfigs {

@@ -53,16 +53,17 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon assembleRelease
           mkdir -p dist
-          cp app/build/outputs/apk/release/app-release.apk "dist/Seerr-${APP_VERSION}.apk"
+          # Fixed name so releases/latest/download/Seerr-Android.apk always works.
+          cp app/build/outputs/apk/release/app-release.apk dist/Seerr-Android.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Seerr-${{ steps.version.outputs.name }}
-          path: dist/*.apk
+          name: Seerr-Android-${{ steps.version.outputs.name }}
+          path: dist/Seerr-Android.apk
 
       - name: Publish GitHub release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.apk
+          files: dist/Seerr-Android.apk
           generate_release_notes: true

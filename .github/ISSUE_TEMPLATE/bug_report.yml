@@ -1,0 +1,47 @@
+name: Bug report
+description: Something in the app isn't working
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Problems with Seerr itself (pages, requests, settings) belong in the [Seerr repo](https://github.com/seerr-team/seerr/issues). This repo covers the Android app.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      description: Shown in App settings → About
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Phone and Android version
+      placeholder: "Pixel 8, Android 15"
+    validations:
+      required: true
+  - type: input
+    id: seerr-version
+    attributes:
+      label: Seerr version
+      placeholder: "3.0.0"
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Setup / connecting to server
+        - Signing in (Plex, Jellyfin, Emby, local)
+        - Instant alerts
+        - Request notifications
+        - Approve / Decline buttons
+        - Navigation, back button, refresh
+        - Something else

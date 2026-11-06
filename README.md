@@ -1,79 +1,166 @@
 <p align="center">
-  <img src="app/src/main/res/drawable-xxhdpi/logo_full.png" alt="Seerr" width="320">
+  <img src="docs/banner.png" alt="Seerr for Android" width="100%">
 </p>
 
-<h3 align="center">Seerr for Android</h3>
+<p align="center">
+  <a href="https://github.com/RamenNuudlss/Seerr-Android/releases/latest"><img src="https://img.shields.io/github/v/release/RamenNuudlss/Seerr-Android?style=for-the-badge&color=6366f1&label=Release" alt="Latest release"></a>
+  <a href="https://github.com/RamenNuudlss/Seerr-Android/releases"><img src="https://img.shields.io/github/downloads/RamenNuudlss/Seerr-Android/total?style=for-the-badge&color=8b5cf6&label=Downloads" alt="Downloads"></a>
+  <a href="https://github.com/RamenNuudlss/Seerr-Android/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/RamenNuudlss/Seerr-Android/build.yml?branch=main&style=for-the-badge&label=Build" alt="Build"></a>
+  <img src="https://img.shields.io/badge/Android-8.0%2B-3ddc84?style=for-the-badge&logo=android&logoColor=white" alt="Android 8.0+">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/RamenNuudlss/Seerr-Android?style=for-the-badge&color=374151" alt="MIT License"></a>
+</p>
 
 <p align="center">
-  An unofficial Android app for <a href="https://github.com/seerr-team/seerr">Seerr</a>, the media request manager for Plex, Jellyfin and Emby.
+  <a href="https://github.com/RamenNuudlss/Seerr-Android/releases/latest/download/Seerr-Android.apk">
+    <img src="https://img.shields.io/badge/Download_APK-6366f1?style=for-the-badge&logo=android&logoColor=white" alt="Download APK" height="44">
+  </a>
+</p>
+
+<p align="center">
+  The Android app <a href="https://github.com/seerr-team/seerr">Seerr</a> never had.<br>
+  Your server's full interface, plus <b>instant request alerts you can approve from the notification</b>.
 </p>
 
 ---
 
-## What it is
+> [!NOTE]
+> This is an unofficial app made by a fan. It isn't affiliated with or endorsed by the Seerr team.
 
-The app loads **your own Seerr server's interface**, so it looks and works exactly like Seerr in a browser, with every feature included, and it always matches whatever Seerr version you run. On top of that, it adds the things a browser tab can't do well on a phone:
+## ✨ Why use it
 
-- **Instant new-request alerts with Approve / Decline buttons.** A notification arrives within seconds of someone making a request, with the poster and buttons to approve or decline it right from the notification. This uses Seerr's built-in ntfy notifications: a Seerr admin can switch it on with one tap in the app's settings, and the app then keeps a lightweight connection to the topic. No extra app, Firebase or polling is needed.
-- **Request status notifications.** You get alerts when your own requests are approved, declined or become available. The app checks your server about every 15 minutes for these. Seerr's "Web Push" option needs browser features that Android apps can't use.
-- **Plex sign-in that works.** Plex sign-in opens in your browser, so Google and Apple sign-in and saved passwords work. The app closes the browser tab when you're done.
-- **Back button support.** Back closes an open Seerr modal first, then goes back a page. Pressing it twice at the start exits the app.
-- **Pull down to refresh.** This is ignored while a modal is open or a panel is scrolled.
-- **Long-press shortcuts** for Discover, Requests, Profile and App settings, matching Seerr's web app.
-- **Share to Seerr.** Share a TMDB link or a title from any app to open it or search for it in Seerr.
-- **Self-hosting support.** Plain `http://` LAN addresses work, as do certificates from your own CA (once installed in Android settings) and reverse proxies that ask for a username and password (basic auth) or redirect to a login page like Authelia or Authentik.
-- **Edge-to-edge dark UI** that blends into Seerr's own colours, with fullscreen video and file upload support.
-- **Built-in update check.** The app checks GitHub releases once a day and offers the new APK.
+Seerr's web UI is already great on a phone, so the app shows **your own server's interface**: every page, every setting and every feature, always matching the Seerr version you run. What the app adds is everything a browser tab can't do:
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>⚡ Instant request alerts</h3>
+      Get a notification within seconds of someone making a request, with the poster attached. No waiting for a polling interval.
+    </td>
+    <td width="50%" valign="top">
+      <h3>✅ Approve from the notification</h3>
+      Tap <b>Approve</b> or <b>Decline</b> right on the alert, from the lock screen, without opening anything.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🔔 Request status updates</h3>
+      Get told when your own requests are approved, declined or ready to watch.
+    </td>
+    <td valign="top">
+      <h3>🔑 Plex sign-in that works</h3>
+      Plex sign-in opens in your browser, so Google, Apple and saved passwords work. The app takes you back when you're done.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>📱 Feels like an app</h3>
+      Back closes modals first, pull down refreshes, and it runs edge-to-edge in Seerr's own dark theme, with fullscreen video and file uploads.
+    </td>
+    <td valign="top">
+      <h3>🚀 Shortcuts &amp; sharing</h3>
+      Long-press the icon for Discover, Requests and Profile. Share a TMDB link or a title from any app to open it in Seerr.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🏠 Made for self-hosters</h3>
+      Works with LAN <code>http://</code> addresses, your own certificates, basic-auth reverse proxies, and Authelia or Authentik login pages.
+    </td>
+    <td valign="top">
+      <h3>🔄 Updates itself</h3>
+      Checks this repo once a day and offers the new APK when there's a release.
+    </td>
+  </tr>
+</table>
+
+## 📥 Install
+
+1. **[Download the APK](https://github.com/RamenNuudlss/Seerr-Android/releases/latest/download/Seerr-Android.apk)** on your phone.
+2. Open it, and allow installs from your browser or file manager if Android asks.
+3. Enter your server address, for example `https://requests.example.com` or `192.168.1.10:5055`, and sign in like you normally do.
 
 Requires Android 8.0 or newer.
 
-## Install
+## ⚡ Instant alerts
 
-1. Download the latest `Seerr-x.y.z.apk` from [Releases](../../releases/latest).
-2. Open it on your phone and allow installing from your browser or file manager when Android asks.
-3. Enter your server address, for example `https://requests.example.com` or `192.168.1.10:5055`, and sign in as usual.
+Seerr has built-in [ntfy](https://ntfy.sh) notifications that fire the moment a request is made. The app keeps a lightweight connection to that ntfy topic, so you need no extra app, no Firebase and no polling.
 
-App settings, such as notifications, Plex sign-in mode, pull to refresh, changing server and signing out, are under the **App settings** long-press shortcut on the app icon. They also appear on the error screen if the server can't be reached.
-
-## Instant alerts
-
-In the app, long-press the icon, tap **App settings**, and turn on **Instant new-request alerts**:
-
-- **If you're a Seerr admin**, the app switches on Seerr's ntfy agent for you. It uses a private, randomly named topic on the free [ntfy.sh](https://ntfy.sh) service, or your own ntfy server if you prefer. If Seerr already sends to ntfy, the app listens to that same topic, so every phone you set up shares it.
-- **If you're not an admin**, enter the ntfy server and topic your admin gave you.
-
-Then allow background activity when asked, so alerts still arrive instantly while the phone is asleep. Android shows a small silent "Instant alerts" notification while the connection is open. You can hide it by long-pressing it and turning off the **Background connection** category.
-
-Approve and Decline appear on the alert when you're signed in to Seerr in the app as someone who can manage requests.
-
-## Building
-
-GitHub Actions builds the APK on every push and publishes a release when you push a version tag:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
+```mermaid
+flowchart LR
+    A["👤 Someone requests<br/>a movie or show"] --> B["Seerr"]
+    B -- "ntfy agent" --> C["ntfy topic<br/>(ntfy.sh or self-hosted)"]
+    C -- "live connection" --> D["📱 Seerr for Android"]
+    D -- "Approve / Decline" --> B
 ```
 
-To build locally, open the folder in Android Studio, or run `./gradlew assembleDebug`.
+**To turn it on:** long-press the app icon, tap **App settings**, then switch on **Instant new-request alerts**.
 
-### Release signing
+- **Seerr admins** get one-tap setup. The app switches on Seerr's ntfy agent using a private, randomly named topic on the free ntfy.sh service, or your own ntfy server. If Seerr already sends to ntfy, the app reuses that topic, so all your phones share it.
+- **Everyone else** can enter the ntfy server and topic their admin gives them.
+- **Allow background activity** when asked, so alerts still arrive instantly while your phone is asleep.
 
-Android only installs an update over an existing install if both are signed with the same key. Add these repository secrets under **Settings → Secrets and variables → Actions**:
+> [!TIP]
+> Android requires a small silent "Instant alerts" notification while the connection is open. Long-press it and turn off **Background connection** to hide it. The alerts themselves keep working.
 
-| Secret | Value |
+## ⚙️ App settings
+
+Long-press the app icon and tap **App settings**. The same screen opens from the error page if your server can't be reached.
+
+| Setting | What it does |
 | --- | --- |
-| `SIGNING_KEYSTORE_BASE64` | the keystore file, base64-encoded |
-| `SIGNING_STORE_PASSWORD` | keystore password |
-| `SIGNING_KEY_ALIAS` | key alias |
-| `SIGNING_KEY_PASSWORD` | key password |
+| **Server** | Shows or changes the Seerr server the app connects to |
+| **Request notifications** | Alerts for your own requests being approved, declined or becoming available |
+| **Instant new-request alerts** | Live alerts via ntfy, with Approve and Decline buttons |
+| **Open Plex sign-in in browser** | Signs in to Plex through your browser, which supports Google, Apple and password managers |
+| **Pull down to refresh** | Reloads the page when you swipe down at the top |
+| **Sign out and clear data** | Clears the app's cookies, cache and saved logins |
 
-Without them, builds still work but are signed with a throwaway key.
+## ❓ FAQ
 
-## Credits
+<details>
+<summary><b>Does it work with Overseerr or Jellyseerr?</b></summary>
+<br>
+The app works with any server that answers Seerr's API, which includes Overseerr and Jellyseerr, so browsing and requesting work. Instant alerts need a server with an ntfy notification agent, which Seerr has.
+</details>
 
-All of the actual app is [Seerr](https://github.com/seerr-team/seerr) by the Seerr team (MIT). The icons and logo come from that project. This wrapper isn't affiliated with or endorsed by the Seerr team.
+<details>
+<summary><b>Where does my data go?</b></summary>
+<br>
+The app connects to three places: your Seerr server, the ntfy server (only if you turn on instant alerts), and GitHub's API once a day to check for updates. It has no analytics or tracking.
+</details>
 
-## License
+<details>
+<summary><b>Will it drain my battery?</b></summary>
+<br>
+No. The instant-alert connection sits idle until a message arrives, with a tiny keepalive about every 45 seconds. It's the same approach the ntfy app uses. Request status checks run every 15 minutes, scheduled by Android.
+</details>
 
-MIT
+<details>
+<summary><b>Why isn't it on the Play Store?</b></summary>
+<br>
+It's a personal project. Releases are built and signed by GitHub Actions from this repo's source, and the app tells you when there's an update.
+</details>
+
+<details>
+<summary><b>I don't see Approve / Decline on an alert</b></summary>
+<br>
+The buttons only appear for requests that are still pending, and only when you're signed in to Seerr in the app as someone who can manage requests.
+</details>
+
+## 🛠️ Building from source
+
+Open the project in Android Studio, or run:
+
+```bash
+./gradlew assembleDebug
+```
+
+Every push to `main` is built by GitHub Actions. Pushing a tag such as `v1.2.0` publishes a signed release with the APK attached. Release signing reads the `SIGNING_KEYSTORE_BASE64`, `SIGNING_STORE_PASSWORD`, `SIGNING_KEY_ALIAS` and `SIGNING_KEY_PASSWORD` repository secrets.
+
+## 💜 Credits
+
+All the real work is [Seerr](https://github.com/seerr-team/seerr) by the Seerr team, along with the Overseerr and Jellyseerr projects before it. The logo and icons come from Seerr under the MIT License. This app just puts it in your pocket.
+
+## 📄 License
+
+[MIT](LICENSE)
