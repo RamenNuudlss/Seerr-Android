@@ -159,7 +159,7 @@ Every push to `main` is built by GitHub Actions. Pushing a tag such as `v1.2.0` 
 
 ## 💜 Credits
 
-All the real work is [Seerr](https://github.com/seerr-team/seerr) by the Seerr team, along with the Overseerr and Jellyseerr projects before it. The logo and icons come from Seerr under the MIT License. This app just puts it in your pocket.
+All the real work is [Seerr](https://github.com/seerr-team/seerr) by the Seerr team, along with the Overseerr and Jellyseerr projects before it. The logo and icons come from Seerr under the MIT License (see [NOTICE](NOTICE)). This app just puts it in your pocket.
 
 ## 📄 License
 
